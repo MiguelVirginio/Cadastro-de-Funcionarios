@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      prefWidth="1100"
+      prefHeight="720"
+      style="-fx-background-color: #080D16;"
+      fx:controller="com.stilinsky.cadastro_de_funcionarios.HelloController">
+
+    <!-- Painel de identidade visual -->
+    <VBox alignment="CENTER"
+          spacing="22"
+          prefWidth="380"
+          minWidth="300"
+          style="-fx-background-color: linear-gradient(to bottom right, #101D32, #080D16);">
+
+        <padding>
+            <Insets top="40" right="30" bottom="40" left="30"/>
+        </padding>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <Label text="V"
+               style="-fx-font-size: 100px;
+                      -fx-font-weight: bold;
+                      -fx-text-fill: #1685FF;"/>
+
+        <Label text="V E L O C E"
+               style="-fx-font-size: 27px;
+                      -fx-font-weight: bold;
+                      -fx-text-fill: #F4F7FC;"/>
+
+        <Label text="Dirigir começa\nna escolha."
+               textAlignment="CENTER"
+               style="-fx-font-size: 19px;
+                      -fx-text-fill: #8DA9CE;
+                      -fx-line-spacing: 7px;"/>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <Label text="CADASTRO DE USUÁRIO"
+               style="-fx-font-size: 10px;
+                      -fx-text-fill: #45658C;
+                      -fx-letter-spacing: 3px;"/>
+
+    </VBox>
+
+    <!-- Área do formulário -->
+    <StackPane HBox.hgrow="ALWAYS"
+               style="-fx-background-color: #0B111B;">
+
+        <VBox alignment="CENTER"
+              spacing="0"
+              maxWidth="470"
+              style="-fx-background-color: #0D1521;
+                     -fx-background-radius: 18;
+                     -fx-border-color: #1C2B40;
+                     -fx-border-radius: 18;">
+
+            <padding>
+                <Insets top="38" right="42" bottom="38" left="42"/>
+            </padding>
+
+            <Label text="Criar Conta"
+                   maxWidth="Infinity"
+                   style="-fx-font-size: 32px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #F4F7FC;"/>
+
+            <Label text="Preencha seus dados para começar."
+                   maxWidth="Infinity"
+                   style="-fx-font-size: 13px;
+              -fx-text-fill: #8295AF;"/>
+
+            <Region minHeight="28"/>
+
+            <!-- Nome -->
+            <VBox spacing="9" maxWidth="Infinity">
+                <Label text="Nome"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #DCE6F5;"/>
+
+                <TextField fx:id="tfNome"
+                           promptText="Seu primeiro nome"
+                           prefHeight="48"
+                           style="-fx-background-color: #111D2C;
+                                  -fx-text-fill: #FFFFFF;
+                                  -fx-prompt-text-fill: #647994;
+                                  -fx-font-size: 14px;
+                                  -fx-background-radius: 8;
+                                  -fx-border-color: #293C55;
+                                  -fx-border-radius: 8;
+                                  -fx-border-width: 1;"/>
+            </VBox>
+
+            <Region minHeight="19"/>
+
+            <!-- Sobrenome -->
+            <VBox spacing="9" maxWidth="Infinity">
+                <Label text="Sobrenome"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #DCE6F5;"/>
+
+                <TextField fx:id="tfSobrenome"
+                           promptText="Seu sobrenome"
+                           prefHeight="48"
+                           style="-fx-background-color: #111D2C;
+                                  -fx-text-fill: #FFFFFF;
+                                  -fx-prompt-text-fill: #647994;
+                                  -fx-font-size: 14px;
+                                  -fx-background-radius: 8;
+                                  -fx-border-color: #293C55;
+                                  -fx-border-radius: 8;
+                                  -fx-border-width: 1;"/>
+            </VBox>
+
+            <Region minHeight="19"/>
+
+            <!-- E-mail -->
+            <VBox spacing="9" maxWidth="Infinity">
+                <Label text="E-mail"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #DCE6F5;"/>
+
+                <TextField fx:id="tfEmail"
+                           promptText="voce@exemplo.com"
+                           prefHeight="48"
+                           style="-fx-background-color: #111D2C;
+                                  -fx-text-fill: #FFFFFF;
+                                  -fx-prompt-text-fill: #647994;
+                                  -fx-font-size: 14px;
+                                  -fx-background-radius: 8;
+                                  -fx-border-color: #293C55;
+                                  -fx-border-radius: 8;
+                                  -fx-border-width: 1;"/>
+            </VBox>
+
+            <Region minHeight="19"/>
+
+            <!-- Senha -->
+            <VBox spacing="9" maxWidth="Infinity">
+                <Label text="Senha"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #DCE6F5;"/>
+
+                <PasswordField fx:id="pfSenha"
+                               promptText="Crie uma senha"
+                               prefHeight="48"
+                               style="-fx-background-color: #111D2C;
+                                      -fx-text-fill: #FFFFFF;
+                                      -fx-prompt-text-fill: #647994;
+                                      -fx-font-size: 14px;
+                                      -fx-background-radius: 8;
+                                      -fx-border-color: #293C55;
+                                      -fx-border-radius: 8;
+                                      -fx-border-width: 1;"/>
+            </VBox>
+
+            <Region minHeight="30"/>
+
+            <!-- Botão de cadastro -->
+            <Button fx:id="btnCadastrar"
+                    text="Cadastrar"
+                    maxWidth="Infinity"
+                    prefHeight="52"
+                    style="-fx-background-color: linear-gradient(to right, #087BFA, #1764E8);
+                           -fx-text-fill: white;
+                           -fx-font-size: 15px;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 9;
+                           -fx-cursor: hand;"/>
+
+            <Region minHeight="12"/>
+
+            <!-- RECUPERAR SENHA -->
+            <HBox alignment="CENTER_RIGHT" maxWidth="Infinity">
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+
+                <Hyperlink fx:id="btnLogar"
+                        text="Lembrou que tem senha"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #1685FF;
+                               -fx-font-size: 12px;
+                               -fx-cursor: hand;"
+                        onAction="#handleLogarConta"/>
+
+            </HBox>
+
+        </VBox>
+    </StackPane>
+
+</HBox>
