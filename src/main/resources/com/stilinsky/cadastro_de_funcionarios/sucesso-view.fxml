@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.stilinsky.cadastro_de_funcionarios.controller.SucessoController"
+      alignment="CENTER"
+      spacing="25"
+      prefWidth="1100"
+      prefHeight="750"
+      style="-fx-background-color: #0B111B;">
+
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <Label text="VELOCE"
+           style="-fx-font-size: 18px;
+                  -fx-font-weight: bold;
+                  -fx-text-fill: #1685FF;"/>
+
+    <Label text="Bem-vindo!"
+           style="-fx-font-size: 36px;
+                  -fx-font-weight: bold;
+                  -fx-text-fill: #F4F7FC;"/>
+
+    <Label text="Você entrou na sua conta."
+           style="-fx-font-size: 16px;
+                  -fx-text-fill: #8295AF;"/>
+
+    <Button fx:id="btnConfirmar"
+            text="Confirmar login"
+            onAction="#handleConfirmar"
+            prefWidth="280"
+            prefHeight="55"
+            style="-fx-background-color: #087BFA;
+                   -fx-text-fill: white;
+                   -fx-font-size: 16px;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 10;
+                   -fx-cursor: hand;"/>
+
+</VBox>

@@ -18,7 +18,7 @@ public class HelloApplication extends Application {
         stage.setHeight(750);
         // Centraliza a janela
         stage.centerOnScreen();
-        stage.setTitle("Hello!");
+        stage.setTitle("Cadastro!");
         stage.setScene(scene);
         stage.show();
     }

@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-
-<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       prefWidth="1100"
       prefHeight="750"
       style="-fx-background-color: #0B111B;"
-      fx:controller="com.stilinsky.cadastro_de_funcionarios.LoginController">
+      fx:controller="com.stilinsky.cadastro_de_funcionarios.controller.LoginController">
 
     <!-- PAINEL LATERAL -->
     <VBox alignment="CENTER"
@@ -117,6 +109,8 @@
                               -fx-font-weight: bold;
                               -fx-text-fill: #DCE6F5;"/>
 
+                <StackPane maxWidth="1.7976931348623157E308" prefHeight="50">
+                    <children>
                 <PasswordField fx:id="pfSenha"
                                promptText="Digite sua senha"
                                prefHeight="50"
@@ -128,6 +122,22 @@
                                       -fx-border-color: #293C55;
                                       -fx-border-radius: 8;
                                       -fx-border-width: 1;"/>
+
+
+                        <TextField fx:id="textField" maxWidth="1.7976931348623157E308" onKeyPressed="#teclado"
+                                   prefHeight="50" promptText="Senha" style="
+                                   -fx-background-color: #111D2C;
+                                      -fx-text-fill: #FFFFFF;
+                                      -fx-prompt-text-fill: #647994;
+                                      -fx-font-size: 14px;
+                                      -fx-background-radius: 8;
+                                      -fx-border-color: #293C55;
+                                      -fx-border-radius: 8;
+                                      -fx-border-width: 1;" visible="false"/>
+                    </children>
+                </StackPane>
+                <CheckBox fx:id="passShow" mnemonicParsing="false" onAction="#toggleSenha" prefHeight="17.0"
+                          prefWidth="112.0" text="Show Password" textFill="WHITE"/>
 
             </VBox>
 
@@ -162,6 +172,7 @@
                     text="Entrar"
                     maxWidth="Infinity"
                     prefHeight="52"
+                    onAction="#handleLogin"
                     style="-fx-background-color: linear-gradient(to right, #087BFA, #1764E8);
                            -fx-text-fill: white;
                            -fx-font-size: 15px;

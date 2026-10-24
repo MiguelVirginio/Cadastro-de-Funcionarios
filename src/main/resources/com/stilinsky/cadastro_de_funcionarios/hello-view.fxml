@@ -8,7 +8,7 @@
       prefWidth="1100"
       prefHeight="720"
       style="-fx-background-color: #080D16;"
-      fx:controller="com.stilinsky.cadastro_de_funcionarios.HelloController">
+      fx:controller="com.stilinsky.cadastro_de_funcionarios.controller.HelloController">
 
     <!-- Painel de identidade visual -->
     <VBox alignment="CENTER"
@@ -33,7 +33,7 @@
                       -fx-font-weight: bold;
                       -fx-text-fill: #F4F7FC;"/>
 
-        <Label text="Dirigir começa\nna escolha."
+        <Label text="Dirigir começa&#10; na escolha."
                textAlignment="CENTER"
                style="-fx-font-size: 19px;
                       -fx-text-fill: #8DA9CE;
