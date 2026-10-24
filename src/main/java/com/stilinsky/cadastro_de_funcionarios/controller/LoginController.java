@@ -1,5 +1,6 @@
 package com.stilinsky.cadastro_de_funcionarios.controller;
 
+import com.stilinsky.cadastro_de_funcionarios.service.funcions_extra.EmailValido;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -53,6 +54,8 @@ public class LoginController {
 
         String email = tfEmail.getText().trim();
         String senha = getSenhaAtual().trim();
+
+        EmailValido.emailValido(email);
 
         // 1. Validar campos vazios
         if (email.isEmpty() || senha.isEmpty()) {
