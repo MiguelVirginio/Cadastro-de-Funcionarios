@@ -23,10 +23,6 @@
     <version>1.0-SNAPSHOT</version>
     <name>Cadastro de Funcionarios</name>
 
-    <!--    <properties>-->
-    <!--        -->
-    <!--    </properties>-->
-
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -46,7 +42,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
 
 
         <!-- Banco -->
@@ -116,8 +111,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>25</source>
-                    <target>25</target>
+                    <release>25</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -129,9 +123,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>
-                                com.stilinsky.cadastro_de_funcionarios/com.stilinsky.cadastro_de_funcionarios.HelloApplication
-                            </mainClass>
+                            <mainClass>com.stilinsky.cadastro_de_funcionarios.Launcher</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
