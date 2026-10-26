@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.stilinsky.cadastro_de_funcionarios.controller.RecuperarSenhaController"
+      prefWidth="1100"
+      prefHeight="750"
+      style="-fx-background-color: #0B111B;">
+
+    <!-- PAINEL LATERAL VELOCE -->
+    <VBox alignment="CENTER"
+          spacing="22"
+          prefWidth="380"
+          minWidth="300"
+          style="-fx-background-color: linear-gradient(to bottom right, #101D32, #080D16);">
+
+        <padding>
+            <Insets top="40" right="30" bottom="40" left="30"/>
+        </padding>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <Label text="V"
+               style="-fx-font-size: 100px;
+                      -fx-font-weight: bold;
+                      -fx-text-fill: #1685FF;"/>
+
+        <Label text="V E L O C E"
+               style="-fx-font-size: 27px;
+                      -fx-font-weight: bold;
+                      -fx-text-fill: #F4F7FC;"/>
+
+        <Label text="Dirigir começa&#10;na escolha."
+               textAlignment="CENTER"
+               style="-fx-font-size: 19px;
+                      -fx-text-fill: #8DA9CE;"/>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <Label text="RECUPERAÇÃO DE ACESSO"
+               style="-fx-font-size: 10px;
+                      -fx-text-fill: #45658C;"/>
+
+    </VBox>
+
+    <!-- ÁREA DO FORMULÁRIO -->
+    <StackPane HBox.hgrow="ALWAYS"
+               style="-fx-background-color: #0B111B;">
+
+        <VBox alignment="CENTER"
+              spacing="0"
+              maxWidth="470"
+              style="-fx-background-color: #0D1521;
+                     -fx-background-radius: 18;
+                     -fx-border-color: #1C2B40;
+                     -fx-border-radius: 18;">
+
+            <padding>
+                <Insets top="45" right="42" bottom="45" left="42"/>
+            </padding>
+
+            <Label text="Recuperar senha"
+                   maxWidth="Infinity"
+                   style="-fx-font-size: 29px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #F4F7FC;"/>
+
+            <Label text="Esqueceu sua senha? Vamos ajudar você."
+                   wrapText="true"
+                   maxWidth="Infinity"
+                   style="-fx-font-size: 13px;
+                          -fx-text-fill: #8295AF;"/>
+
+            <Region minHeight="35"/>
+
+            <VBox spacing="10" maxWidth="Infinity">
+
+                <Label text="E-mail cadastrado"
+                       style="-fx-font-size: 13px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #DCE6F5;"/>
+
+                <TextField fx:id="tfEmail"
+                           promptText="voce@exemplo.com"
+                           prefHeight="50"
+                           onAction="#handleRecuperarSenha"
+                           style="-fx-background-color: #111D2C;
+                                  -fx-text-fill: #FFFFFF;
+                                  -fx-prompt-text-fill: #647994;
+                                  -fx-font-size: 14px;
+                                  -fx-background-radius: 8;
+                                  -fx-border-color: #293C55;
+                                  -fx-border-radius: 8;
+                                  -fx-border-width: 1;"/>
+
+            </VBox>
+
+            <Region minHeight="28"/>
+
+            <Button fx:id="btnEnviar"
+                    text="Solicitar recuperação"
+                    onAction="#handleRecuperarSenha"
+                    maxWidth="Infinity"
+                    prefHeight="52"
+                    style="-fx-background-color: linear-gradient(to right, #087BFA, #1764E8);
+                           -fx-text-fill: white;
+                           -fx-font-size: 15px;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 9;
+                           -fx-cursor: hand;"/>
+
+            <Region minHeight="18"/>
+
+            <Button fx:id="btnVoltar"
+                    text="Voltar para o login"
+                    onAction="#handleVoltarLogin"
+                    maxWidth="Infinity"
+                    prefHeight="42"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #1685FF;
+                           -fx-font-size: 13px;
+                           -fx-cursor: hand;"/>
+
+            <Region minHeight="25"/>
+
+            <Label text="VELOCE • ACESSO SEGURO"
+                   style="-fx-font-size: 10px;
+                          -fx-text-fill: #45658C;"/>
+
+        </VBox>
+
+    </StackPane>
+
+</HBox>

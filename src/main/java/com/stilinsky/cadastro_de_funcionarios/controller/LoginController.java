@@ -3,19 +3,12 @@ package com.stilinsky.cadastro_de_funcionarios.controller;
 
 import com.stilinsky.cadastro_de_funcionarios.entity.Funcionario;
 import com.stilinsky.cadastro_de_funcionarios.service.FuncionarioService;
-
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -135,6 +128,29 @@ public class LoginController {
             );
         }
 
+    }
+
+    @FXML
+    protected void handleRecuperarSenha() {
+
+        try {
+            Scene scene = new Scene(
+                    com.stilinsky.cadastro_de_funcionarios.FXMLUtil.carregar(
+                            "/com/stilinsky/cadastro_de_funcionarios/recuperar-senha-view.fxml"
+                    )
+            );
+
+            Stage stage = (Stage) btnCadastrar.getScene().getWindow();
+            stage.setScene(scene);
+            stage.centerOnScreen();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            TelaDeAviso.mensagemDeErro(
+                    "Erro ao abrir recuperação de senha."
+            );
+        }
     }
 
     private String getSenhaAtual() {
