@@ -168,14 +168,15 @@
             <!-- Botão de cadastro -->
             <Button fx:id="btnCadastrar"
                     text="Cadastrar"
+                    onAction="#handleCadastrar"
                     maxWidth="Infinity"
                     prefHeight="52"
                     style="-fx-background-color: linear-gradient(to right, #087BFA, #1764E8);
-                           -fx-text-fill: white;
-                           -fx-font-size: 15px;
-                           -fx-font-weight: bold;
-                           -fx-background-radius: 9;
-                           -fx-cursor: hand;"/>
+               -fx-text-fill: white;
+               -fx-font-size: 15px;
+               -fx-font-weight: bold;
+               -fx-background-radius: 9;
+               -fx-cursor: hand;"/>
 
             <Region minHeight="12"/>
 

@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
-public class FuncionarioService {
+public class FuncionarioService  {
 
     private final FuncionarioRepository repository;
     private final PasswordEncoder passwordEncoder;

@@ -1,6 +1,9 @@
+
 package com.stilinsky.cadastro_de_funcionarios.controller;
 
-import com.stilinsky.cadastro_de_funcionarios.service.funcions_extra.EmailValido;
+import com.stilinsky.cadastro_de_funcionarios.entity.Funcionario;
+import com.stilinsky.cadastro_de_funcionarios.service.FuncionarioService;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,92 +11,130 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
-import javafx.scene.control.Button;
+import java.util.Optional;
 
-
+@Component
 public class LoginController {
+
+    private final FuncionarioService funcionarioService;
+
+    public LoginController(FuncionarioService funcionarioService) {
+        this.funcionarioService = funcionarioService;
+    }
+
     @FXML
     private Hyperlink btnCadastrar;
+
     @FXML
     private Hyperlink btnRecuperarSenha;
+
     @FXML
-    protected Button btnEntrar;
+    private Button btnEntrar;
+
     @FXML
     private TextField tfEmail;
+
     @FXML
     private PasswordField pfSenha;
+
     @FXML
     private TextField textField;
+
     @FXML
     private CheckBox passShow;
 
 
-    private String SenhaVdd = "teste";
-    private String Emailvdd = "teste";
-
     @FXML
     protected void handleCriarConta() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/stilinsky/cadastro_de_funcionarios/hello-view.fxml"));
-            Scene scene = new Scene(loader.load());
+            Scene scene = new Scene(
+                    com.stilinsky.cadastro_de_funcionarios.FXMLUtil.carregar(
+                            "/com/stilinsky/cadastro_de_funcionarios/hello-view.fxml"
+                    )
+            );
+
             Stage stage = (Stage) btnCadastrar.getScene().getWindow();
             stage.setScene(scene);
+            stage.centerOnScreen();
+
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Erro ao abrir a tela de cadastro.");
+
+            TelaDeAviso.mensagemDeErro(
+                    "Não foi possível abrir a tela de cadastro."
+            );
         }
     }
- 
-    int tentativas = 3;
+
     @FXML
     protected void handleLogin() {
+        String email = tfEmail.getText();
+        String senha = getSenhaAtual();
 
-        String email = tfEmail.getText().trim();
-        String senha = getSenhaAtual().trim();
+        if (email == null || email.isBlank()
+                || senha == null || senha.isBlank()) {
 
-        EmailValido.emailValido(email);
-
-        // 1. Validar campos vazios
-        if (email.isEmpty() || senha.isEmpty()) {
             TelaDeAviso.mensagemDeWarnig(
-                    "Preencha os campos corretamente"
+                    "Preencha o e-mail e a senha."
             );
             return;
         }
 
-        // 2. Validar credenciais
-        if (!email.equals(Emailvdd) || !senha.equals(SenhaVdd)) {
+        Optional<Funcionario> resultado;
+
+        try {
+            resultado = funcionarioService.autenticar(email, senha);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
             TelaDeAviso.mensagemDeErro(
-                    "E-mail ou senha estão incorretos"
+                    "Não foi possível conectar ao banco de dados."
             );
             return;
         }
 
-        // 3. Login realizado com sucesso
-
-        if (email.equals(Emailvdd) && senha.equals(SenhaVdd)) {
-            System.out.println("Email e Senha Corretos, Bem vindo: " + email);
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/stilinsky/cadastro_de_funcionarios/sucesso-view.fxml"));
-                Scene scene = new Scene(loader.load());
-                Stage stage = (Stage) btnCadastrar.getScene().getWindow();
-                stage.setScene(scene);
-
-                stage.setScene(scene);
-                stage.centerOnScreen();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Erro ao abrir a tela de cadastro.");
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-                System.out.println("Erro ao abrir a tela de cadastro.");
-            }
+        if (resultado.isEmpty()) {
+            TelaDeAviso.mensagemDeErro(
+                    "E-mail ou senha incorretos."
+            );
+            return;
         }
+
+        Funcionario funcionario = resultado.get();
+
+        System.out.println(
+                "Login realizado: " + funcionario.getEmail()
+        );
+
+
+        try {
+            Scene scene = new Scene(
+                    com.stilinsky.cadastro_de_funcionarios.FXMLUtil.carregar(
+                            "/com/stilinsky/cadastro_de_funcionarios/sucesso-view.fxml"
+                    )
+            );
+
+            Stage stage = (Stage) btnEntrar.getScene().getWindow();
+            stage.setScene(scene);
+            stage.centerOnScreen();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            TelaDeAviso.mensagemDeErro(
+                    "Não foi possível abrir a tela de sucesso."
+            );
+        }
+
     }
 
     private String getSenhaAtual() {
@@ -102,19 +143,22 @@ public class LoginController {
                 : pfSenha.getText();
     }
 
-    // ==============================
-    // 👁 MOSTRAR/OCULTAR SENHA
-    // ==============================
     @FXML
     private void toggleSenha() {
         if (passShow.isSelected()) {
             textField.setText(pfSenha.getText());
             textField.setVisible(true);
+            textField.setManaged(true);
+
             pfSenha.setVisible(false);
+            pfSenha.setManaged(false);
         } else {
             pfSenha.setText(textField.getText());
             pfSenha.setVisible(true);
+            pfSenha.setManaged(true);
+
             textField.setVisible(false);
+            textField.setManaged(false);
         }
     }
 
@@ -124,5 +168,4 @@ public class LoginController {
             handleLogin();
         }
     }
-
 }

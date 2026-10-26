@@ -2,7 +2,9 @@ package com.stilinsky.cadastro_de_funcionarios.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SucessoController {
 
     @FXML

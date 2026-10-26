@@ -3,6 +3,9 @@ package com.stilinsky.cadastro_de_funcionarios.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
