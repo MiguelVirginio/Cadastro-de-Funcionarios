@@ -23,17 +23,17 @@
 
         <Region VBox.vgrow="ALWAYS"/>
 
-        <Label text="V"
+        <Label text="A"
                style="-fx-font-size: 100px;
                       -fx-font-weight: bold;
                       -fx-text-fill: #1685FF;"/>
 
-        <Label text="V E L O C E"
+        <Label text="A C E S S O +"
                style="-fx-font-size: 27px;
                       -fx-font-weight: bold;
                       -fx-text-fill: #F4F7FC;"/>
 
-        <Label text="Dirigir começa&#10;na escolha."
+        <Label text="Cadastro de &#10; Funcionarios."
                textAlignment="CENTER"
                style="-fx-font-size: 19px;
                       -fx-text-fill: #8DA9CE;"/>

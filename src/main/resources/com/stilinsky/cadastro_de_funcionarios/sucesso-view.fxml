@@ -18,7 +18,7 @@
         <Insets top="40" right="40" bottom="40" left="40"/>
     </padding>
 
-    <Label text="VELOCE"
+    <Label text="A C E S S O +"
            style="-fx-font-size: 18px;
                   -fx-font-weight: bold;
                   -fx-text-fill: #1685FF;"/>

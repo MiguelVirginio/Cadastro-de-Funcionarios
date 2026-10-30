@@ -1,0 +1,55 @@
+# Prompt — Capa do projeto Acesso+
+
+
+Crie uma imagem de capa profissional e sofisticada para um projeto de desenvolvimento de software chamado **Acesso+
+ — Cadastro de Funcionários**.
+
+**Formato:** banner horizontal 16:9, alta resolução, composição adequada para GitHub e portfólio de Engenharia de Software.
+
+**Identidade visual:**
+- Estilo tecnológico, corporativo e minimalista.
+- Fundo predominantemente azul-marinho muito escuro (#080D16).
+- Elementos em azul elétrico (#1685FF).
+- Detalhes em azul acinzentado (#8DA9CE).
+- Iluminação sutil, profundidade e efeitos de luz discretos.
+- Aparência de um produto comercial real, sem estética exagerada de ficção científica.
+
+**Composição visual:**
+
+No lado esquerdo, apresentar a identidade da marca Acesso+
+, com um símbolo estilizado da letra V em azul elétrico, seguido do nome Acesso+
+ em tipografia moderna, limpa e elegante.
+
+Abaixo, apresentar o título:
+
+CADASTRO DE FUNCIONÁRIOS
+
+E a descrição:
+
+Sistema desktop de gerenciamento, cadastro e autenticação de usuários.
+
+No lado direito, apresentar uma representação visual realista de uma aplicação desktop, com uma janela de software em tema escuro, mostrando:
+- Interface de login profissional.
+- Campos de e-mail e senha.
+- Botão de autenticação azul.
+- Painel lateral de identidade visual.
+- Elementos sutis de gerenciamento de funcionários.
+- Pequenos elementos gráficos representando banco de dados e segurança da informação.
+
+**Tecnologias utilizadas:**
+
+Representar discretamente as tecnologias do projeto em uma linha ou pequenos elementos visuais:
+
+Java 25 • JavaFX • Spring Boot • Spring Data JPA • Hibernate • MySQL • Maven
+
+**Direção artística:**
+
+A imagem deve transmitir organização, segurança, confiabilidade e domínio de desenvolvimento de software.
+
+Utilizar iluminação azul suave, sombras realistas, bordas discretas e elementos com acabamento profissional.
+
+Manter bastante espaço negativo para facilitar a leitura dos textos.
+
+Evitar excesso de elementos, personagens humanos, robôs, cérebros artificiais, circuitos exagerados e interfaces futuristas irreais.
+
+**Resultado esperado:** uma capa de portfólio de Engenharia de Software com aparência de apresentação profissional de um produto real, com identidade visual consistente e acabamento premium.
