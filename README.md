@@ -1,299 +1,342 @@
-Interface gráfica
+<div align="center">
 
-JavaFX \+ FXML
+# 🔐 ACESSO+ — Cadastro de Funcionários
 
-Regras de negócio
+**Aplicação desktop para cadastro e autenticação de funcionários, com interface moderna em JavaFX, persistência em MySQL e senhas protegidas com BCrypt.**
 
-Spring Boot \+ Services
+![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![JavaFX](https://img.shields.io/badge/JavaFX-21-1685FF?style=for-the-badge&logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Hibernate](https://img.shields.io/badge/Hibernate-JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white)
 
-Persistência dos dados
+</div>
 
-Spring Data JPA \+ Hibernate \+ MySQL
+---
 
-## 1\. Qual é o objetivo do sistema?
+## 📑 Sumário
 
-O sistema permite cadastrar funcionários e autenticar usuários por meio de uma interface gráfica.
+- [Sobre o projeto](#-sobre-o-projeto)
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologias](#-tecnologias)
+- [Arquitetura](#-arquitetura)
+- [Estrutura de pastas](#-estrutura-de-pastas)
+- [Como executar](#-como-executar)
+- [Configuração](#%EF%B8%8F-configuração)
+- [Modelo de dados](#-modelo-de-dados)
+- [Segurança](#-segurança)
+- [Roadmap](#-roadmap)
+- [Problemas conhecidos](#-problemas-conhecidos)
+- [Contribuindo](#-contribuindo)
+- [Licença](#-licença)
 
-O fluxo principal é:
+---
 
-1\. Tela de cadastro ou login
+## 📌 Sobre o projeto
 
-2\. Controller JavaFX
+O **ACESSO+** é uma aplicação desktop que combina o melhor de dois mundos: uma interface rica feita com **JavaFX** e uma camada de negócio/persistência robusta usando **Spring Boot** (sem servidor web) com **Spring Data JPA**.
 
-Recebe os dados da interface
+O projeto implementa o fluxo completo de **cadastro → login → área logada**, seguindo uma arquitetura em camadas (`controller` → `service` → `repository` → `entity`) e utilizando **injeção de dependência do Spring dentro dos controllers do JavaFX** — o que permite que os controllers das telas usem `@Component` e recebam os *services* por construtor, como em qualquer aplicação Spring.
 
-3\. Service
+> 💡 **Destaque técnico:** o `FXMLUtil` configura o `FXMLLoader` com `setControllerFactory(contexto::getBean)`, integrando o ciclo de vida do JavaFX com o contexto do Spring.
 
-Valida e executa as regras de negócio
+---
 
-4\. Repository \+ JPA
+## ✨ Funcionalidades
 
-Consulta ou grava os dados
+| Recurso | Descrição |
+|---|---|
+| 📝 **Cadastro de funcionário** | Nome, sobrenome, e-mail e senha, com validação de campos obrigatórios e formato de e-mail. |
+| 🔑 **Login** | Autenticação por e-mail e senha, comparando o hash BCrypt armazenado no banco. |
+| 👁️ **Mostrar/ocultar senha** | Checkbox que alterna entre `PasswordField` e `TextField` na tela de login. |
+| ⌨️ **Atalho de teclado** | Pressionar `Enter` no campo de senha visível dispara o login. |
+| 🔁 **Recuperação de senha** | Tela de solicitação com validação do e-mail *(envio de link/código ainda em desenvolvimento)*. |
+| ✅ **Tela de sucesso** | Confirmação de login com alerta de boas-vindas. |
+| 🚫 **E-mail único** | Impede cadastros duplicados (verificação no serviço + *unique constraint* no banco). |
+| 🔔 **Alertas padronizados** | Classe `TelaDeAviso` centraliza mensagens de erro, aviso e sucesso. |
+| 🎨 **Tema escuro** | Interface estilizada via CSS inline do JavaFX, com painel lateral de identidade visual. |
 
-5\. Banco de dados MySQL
+---
 
-Importante: o JavaFX cuida da interface. O Spring administra os componentes e suas dependências. O JPA/Hibernate faz a comunicação entre os objetos Java e as tabelas do banco.
+## 🛠️ Tecnologias
 
-## 2\. Como utilizar o programa
+- **Linguagem:** Java 17+ *(recomendado: Java 21, alinhado ao JavaFX 21)*
+- **Interface:** JavaFX 21 + FXML
+- **Framework:** Spring Boot 3.x (`WebApplicationType.NONE`)
+- **Persistência:** Spring Data JPA / Hibernate
+- **Banco de dados:** MySQL 8 *(configuração alternativa para PostgreSQL comentada)*
+- **Segurança:** `spring-security-crypto` (`BCryptPasswordEncoder`)
+- **Utilitários:** Lombok
+- **Build:** Maven
 
-### 2.1. Iniciar a aplicação
+---
 
-1. Abra o projeto no IntelliJ IDEA.
-2. Verifique se o MySQL está em execução e se o banco `cadastroteste` está acessível.
-3. Confira as configurações em `application.properties`.
-4. Execute a classe `HelloApplication`.
+## 🏗️ Arquitetura
 
-Ao iniciar, o programa abre o contexto do Spring Boot em modo não web, usando `WebApplicationType.NONE`. Isso significa que o Spring gerencia os serviços e os repositórios sem precisar iniciar um servidor HTTP para a aplicação desktop.
+### Camadas
 
-### 2.2. Cadastrar um funcionário
-
-Preencha os campos da tela de cadastro:
-
-| Campo | Finalidade |
-| --- | --- |
-| Nome | Primeiro nome do funcionário |
-| Sobrenome | Sobrenome do funcionário |
-| E-mail | Identificação utilizada no login |
-| Senha | Credencial de acesso |
-
-O comportamento configurado é:
-
-1. O usuário preenche os campos.
-2. O controller verifica se os campos obrigatórios estão preenchidos.
-3. O e-mail passa pela validação de formato.
-4. O controller chama o `FuncionarioService`.
-5. O serviço verifica as regras de cadastro, incluindo a existência de e-mail duplicado.
-6. A senha é processada pelo `PasswordEncoder` antes de ser armazenada.
-7. O repositório solicita a persistência do funcionário.
-8. O Hibernate executa a operação no MySQL.
-9. Se o cadastro for concluído, a aplicação informa o sucesso e encaminha o usuário para o login.
-
-Se alguma validação falhar, o cadastro deve ser interrompido e a interface deve apresentar o erro correspondente.
-
-### 2.3. Fazer login
-
-1. Informe o e-mail cadastrado.
-2. Informe a senha.
-3. Clique no botão de login ou pressione Enter, conforme configurado na tela.
-4. O controller chama o serviço de autenticação.
-5. O serviço procura o funcionário pelo e-mail e verifica a senha com o mecanismo de comparação apropriado.
-6. Se as credenciais forem válidas, o usuário segue para a tela de sucesso.
-7. Se forem inválidas, a aplicação apresenta uma mensagem de erro.
-
-A tela também possui suporte para alternar a visibilidade da senha.
-
-Atenção: essa autenticação é a lógica da aplicação desktop. Ela não significa, por si só, que já existe uma sessão de segurança completa, autorização por perfil ou autenticação por token.
-
-## 3\. O que cada classe faz
-
-A divisão de responsabilidades ajuda a manter o projeto organizado e facilita futuras alterações.
-
-| Classe ou componente | Responsabilidade |
-| --- | --- |
-| `HelloApplication` | Inicia a interface JavaFX e integra a inicialização com o Spring. |
-| `AplicacaoSpring` | Configura a inicialização do contexto Spring Boot. |
-| `HelloController` | Controla a tela de cadastro e recebe as ações do usuário. |
-| `LoginController` | Controla a tela de login e o fluxo de autenticação. |
-| `FuncionarioService` | Centraliza as regras de cadastro e autenticação. |
-| `FuncionarioRepository` | Executa consultas e operações de persistência usando Spring Data JPA. |
-| `Funcionario` | Representa o funcionário como entidade persistida no banco. |
-| `PasswordConfig` | Configura o mecanismo de codificação e verificação de senhas. |
-| Arquivos FXML | Definem a estrutura visual das telas. |
-| `module-info.java` | Declara os módulos Java exigidos e as permissões de acesso reflexivo. |
-| `application.properties` | Define as propriedades de conexão e comportamento do JPA. |
-
-Os nomes dos métodos, as validações exatas e o comportamento de cada tela devem ser confirmados no código atual. A tabela descreve as responsabilidades da arquitetura que configuramos.
-
-### Por que separar Controller, Service e Repository?
-
-- Controller: sabe o que fazer quando o usuário clica em um botão.
-- Service: sabe quais regras precisam ser respeitadas.
-- Repository: sabe como acessar os dados persistidos.
-
-Por exemplo, a tela não deve executar SQL diretamente. Ela solicita ao serviço que faça o cadastro, e o serviço utiliza o repositório.
-
-Isso reduz o acoplamento e torna o sistema mais fácil de testar.
-
-## 4\. Como os dados são armazenados
-
-A entidade `Funcionario` representa a tabela `funcionarios`.
-
-| Campo Java | Tipo | Comportamento |
-| --- | --- | --- |
-| `id` | `Long` | Identificador gerado pelo banco. |
-| `nome` | `String` | Obrigatório, até 100 caracteres. |
-| `sobrenome` | `String` | Obrigatório, até 100 caracteres. |
-| `email` | `String` | Obrigatório, até 180 caracteres. |
-| `senhaHash` | `String` | Armazena o valor codificado da senha, até 100 caracteres. |
-| `dataCadastro` | `LocalDateTime` | Data e hora definidas antes da primeira persistência. |
-
-A entidade utiliza anotações JPA para definir o mapeamento:
-
-- `@Entity`: informa que a classe é uma entidade persistente.
-- `@Table`: define o nome da tabela e a restrição de unicidade do e-mail.
-- `@Id`: identifica a chave primária.
-- `@GeneratedValue(strategy = GenerationType.IDENTITY)`: delega a geração do identificador ao banco.
-- `@Column`: define restrições e propriedades das colunas.
-- `@PrePersist`: executa a inicialização da data antes da primeira gravação.
-
-### O que acontece quando o funcionário é salvo?
-
-O código Java trabalha com um objeto:
-
-Java
-
-```
-Funcionario funcionario = new Funcionario(
-    nome,
-    sobrenome,
-    email,
-    senhaCodificada
-);
+```mermaid
+flowchart LR
+    A[FXML<br/>Telas JavaFX] --> B[Controllers<br/>@Component]
+    B --> C[FuncionarioService<br/>@Service]
+    C --> D[FuncionarioRepository<br/>Spring Data JPA]
+    D --> E[(MySQL)]
+    C --> F[PasswordEncoder<br/>BCrypt]
 ```
 
-O serviço encaminha esse objeto ao repositório, normalmente por meio de `save()`.
+### Fluxo de navegação
 
-Java
+```mermaid
+flowchart TD
+    L[Login.fxml] -->|Não tem cadastro?| H[hello-view.fxml<br/>Cadastro]
+    H -->|Cadastro OK / Lembrou da senha| L
+    L -->|Esqueceu a senha?| R[recuperar-senha-view.fxml]
+    R -->|Voltar| L
+    L -->|Login válido| S[sucesso-view.fxml]
+```
+
+### Inicialização
+
+```mermaid
+sequenceDiagram
+    participant Launcher
+    participant HelloApplication
+    participant Spring as Contexto Spring
+    participant FXMLUtil
+    participant Tela as Login.fxml
+
+    Launcher->>HelloApplication: launch()
+    HelloApplication->>Spring: init() → sobe o contexto (sem web)
+    HelloApplication->>FXMLUtil: configurar(contexto)
+    HelloApplication->>FXMLUtil: carregar("Login.fxml")
+    FXMLUtil->>Tela: FXMLLoader + controllerFactory(Spring)
+    HelloApplication->>HelloApplication: start() → stage.show()
+```
+
+---
+
+## 📂 Estrutura de pastas
 
 ```
-funcionarioRepository.save(funcionario);
+src/main
+├── java/com/stilinsky/cadastro_de_funcionarios
+│   ├── AplicacaoSpring.java          # Configuração Spring Boot (scan + JPA repositories)
+│   ├── HelloApplication.java         # Entrada JavaFX: sobe o Spring e abre a tela de login
+│   ├── Launcher.java                 # Main "wrapper" para executar fora de módulos
+│   ├── FXMLUtil.java                 # Carrega FXML usando beans do Spring como controllers
+│   │
+│   ├── config/
+│   │   └── PasswordConfig.java       # Bean do PasswordEncoder (BCrypt)
+│   │
+│   ├── controller/
+│   │   ├── HelloController.java      # Tela de cadastro
+│   │   ├── LoginController.java      # Tela de login
+│   │   ├── RecuperarSenhaController.java
+│   │   ├── SucessoController.java
+│   │   └── TelaDeAviso.java          # Alertas padronizados (erro / aviso / sucesso)
+│   │
+│   ├── entity/
+│   │   └── Funcionario.java          # Entidade JPA
+│   │
+│   ├── repository/
+│   │   └── FuncionarioRepository.java
+│   │
+│   └── service/
+│       ├── FuncionarioService.java   # Regras de negócio: cadastrar / autenticar
+│       └── EmailValido.java          # Validação de formato de e-mail
+│
+└── resources
+    ├── application.properties
+    └── com/stilinsky/cadastro_de_funcionarios
+        ├── Login.fxml
+        ├── hello-view.fxml           # Tela de cadastro
+        ├── recuperar-senha-view.fxml
+        └── sucesso-view.fxml
 ```
 
-O Spring Data JPA delega a persistência ao Hibernate. O Hibernate converte a operação em SQL, e o driver JDBC envia a instrução ao MySQL.
+---
 
-O exemplo ilustra o fluxo; os nomes das variáveis podem diferir do código real.
+## 🚀 Como executar
 
-### Como o sistema impede e-mails duplicados?
+### Pré-requisitos
 
-Existem duas camadas que podem atuar em conjunto:
+- [JDK 17+](https://adoptium.net/) (recomendado JDK 21)
+- [Maven 3.9+](https://maven.apache.org/) *(ou use o wrapper do projeto, se houver)*
+- [MySQL 8](https://dev.mysql.com/downloads/) — ou Docker, para subir o banco rapidamente
 
-1. O serviço consulta o repositório para verificar se o e-mail já está cadastrado.
-2. O banco possui uma restrição de unicidade para o e-mail.
+### 1. Clone o repositório
 
-A primeira camada permite mostrar uma mensagem amigável. A segunda protege a integridade dos dados, inclusive quando duas operações tentam cadastrar o mesmo endereço simultaneamente.
+```bash
+git clone https://github.com/<seu-usuario>/<seu-repositorio>.git
+cd <seu-repositorio>
+```
 
-Detalhe importante: a restrição de unicidade do MySQL pode diferenciar maiúsculas e minúsculas ou não, dependendo da configuração de comparação da coluna. O método `findByEmailIgnoreCase` ajuda nas consultas sem distinção de caixa, mas não garante sozinho que o banco impeça duplicatas como `Pessoa@exemplo.com` e `pessoa@exemplo.com`.
+### 2. Suba o banco de dados
 
-## 5\. Configuração do banco de dados
+**Opção A — Docker (recomendado):**
 
-O arquivo `src/main/resources/application.properties` centraliza a configuração:
+```bash
+docker run -d \
+  --name mysql-acesso \
+  -e MYSQL_ROOT_PASSWORD=<senha_root> \
+  -e MYSQL_DATABASE=cadastroteste \
+  -e MYSQL_USER=<usuario> \
+  -e MYSQL_PASSWORD=<senha> \
+  -p 1112:3306 \
+  mysql:8
+```
 
-properties
+**Opção B — MySQL local:** crie o banco manualmente.
 
-`spring.docker.compose.enabled=false spring.datasource.url=jdbc:mysql://localhost:1112/cadastroteste spring.datasource.username=cpd spring.datasource.password=${DB_PASSWORD} spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver spring.jpa.hibernate.ddl-auto=update spring.jpa.show-sql=true`
+```sql
+CREATE DATABASE cadastroteste CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
-A variável `${DB_PASSWORD}` é uma forma de exemplo para evitar colocar a senha diretamente no arquivo. Ela precisa estar definida no ambiente ou ser fornecida por outro mecanismo de configuração; caso contrário, a conexão pode falhar.
+> A tabela `funcionarios` é criada automaticamente na primeira execução (`spring.jpa.hibernate.ddl-auto=update`).
 
-O significado das principais propriedades:
+### 3. Configure as credenciais
 
-| Propriedade | Efeito |
-| --- | --- |
-| `spring.docker.compose.enabled=false` | Desativa a integração automática de Docker Compose do Spring Boot. |
-| `spring.datasource.url` | Informa o endereço, a porta e o banco de dados. |
-| `spring.datasource.username` | Define o usuário do MySQL. |
-| `spring.datasource.password` | Fornece a senha desse usuário. |
-| `spring.datasource.driver-class-name` | Identifica o driver JDBC do MySQL. |
-| `spring.jpa.hibernate.ddl-auto=update` | Solicita ao Hibernate atualizar o esquema para refletir os mapeamentos das entidades. |
-| `spring.jpa.show-sql=true` | Exibe comandos SQL gerados pelo Hibernate nos logs. |
+Veja a seção [Configuração](#%EF%B8%8F-configuração). A forma recomendada é por **variáveis de ambiente**, sem editar o `application.properties`.
 
-### O que significa `ddl-auto=update`?
+### 4. Execute
 
-Ao iniciar, o Hibernate compara os mapeamentos das entidades com a estrutura do banco e tenta aplicar as atualizações necessárias.
+**Pela IDE (IntelliJ / Eclipse / VS Code):** execute a classe `Launcher`.
 
-Isso é conveniente durante o desenvolvimento, mas não substitui uma estratégia de migração controlada. Em produção, considere utilizar ferramentas como Flyway ou Liquibase e planejar as alterações do esquema.
+**Pelo Maven** *(requer o `javafx-maven-plugin` configurado no `pom.xml`)*:
 
-O `show-sql=true` também é útil para estudar o funcionamento do JPA, mas pode gerar muitos logs. Em ambientes de produção, avalie desativá-lo.
+```bash
+mvn clean javafx:run
+```
 
-## 6\. Por que precisamos corrigir o acesso dos módulos Java?
+> ℹ️ A classe `Launcher` existe para contornar a restrição do JavaFX ao iniciar uma classe que estende `Application` diretamente fora do *module path*. Use-a como *main class* também ao gerar um JAR executável.
 
-O projeto usa `module-info.java`, portanto as classes não ficam automaticamente acessíveis a qualquer módulo.
+---
 
-O Spring utiliza reflexão e, em algumas situações, gera classes dinamicamente por meio do CGLIB. O erro que apareceu ao iniciar o `FuncionarioService` ocorria porque o módulo `java.base` não permitia o acesso reflexivo necessário ao pacote `java.lang`.
+## ⚙️ Configuração
 
-A opção adicionada às configurações de execução foi:
+Configuração padrão em `src/main/resources/application.properties`:
 
-Plain text
+```properties
+spring.docker.compose.enabled=false
 
-`--add-opens=java.base/java.lang=spring.core`
+spring.datasource.url=jdbc:mysql://localhost:1112/cadastroteste
+spring.datasource.username=<usuario>
+spring.datasource.password=<senha>
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-Ela permite que o módulo `spring.core` acesse reflexivamente os membros necessários de `java.lang`.
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
 
-Como manter essa configuração:
+### 🔒 Sobrescrevendo com variáveis de ambiente (recomendado)
 
-1. Abra `Run` → `Edit Configurations` no IntelliJ IDEA.
-2. Selecione a configuração que executa `HelloApplication`.
-3. Localize o campo `VM options`.
-4. Mantenha a opção acima.
-5. Salve e execute novamente.
+O Spring Boot converte variáveis de ambiente em propriedades automaticamente. Assim, **nenhuma credencial precisa ficar no repositório**:
 
-Essa opção deve estar presente na configuração de execução utilizada. Se você executar o programa por outro mecanismo, como um comando Java separado ou uma configuração Maven específica, talvez precise replicá-la.
+**Linux / macOS**
 
-Ela resolve o problema de acesso reflexivo identificado, mas não substitui as diretivas `opens` necessárias para os pacotes da própria aplicação.
+```bash
+export SPRING_DATASOURCE_URL="jdbc:mysql://localhost:1112/cadastroteste"
+export SPRING_DATASOURCE_USERNAME="seu_usuario"
+export SPRING_DATASOURCE_PASSWORD="sua_senha"
+```
 
-## 7\. Como o Spring encontra e conecta as classes
+**Windows (PowerShell)**
 
-O Spring Boot cria e administra objetos chamados beans. Em vez de instanciar manualmente cada serviço, o framework pode criá-los e injetar suas dependências.
+```powershell
+$env:SPRING_DATASOURCE_URL="jdbc:mysql://localhost:1112/cadastroteste"
+$env:SPRING_DATASOURCE_USERNAME="seu_usuario"
+$env:SPRING_DATASOURCE_PASSWORD="sua_senha"
+```
 
-Por exemplo, o `FuncionarioService` depende do `FuncionarioRepository` e do `PasswordEncoder`. Quando a configuração está correta, o Spring fornece essas dependências automaticamente pelo construtor.
+### 🐘 Usando PostgreSQL
 
-Isso é chamado de injeção de dependência.
+O `application.properties` já traz um bloco comentado para PostgreSQL. Para usá-lo:
 
-O fluxo é semelhante a:
+1. Adicione a dependência `org.postgresql:postgresql` ao `pom.xml`.
+2. Comente o bloco do MySQL e descomente o do PostgreSQL.
+3. Defina `DATABASE_URL`, `DATABASE_USERNAME` e `DATABASE_PASSWORD`.
 
-1\. Spring inicializa o contexto
+---
 
-Lê configurações e identifica componentes.
+## 🗄️ Modelo de dados
 
-2\. Spring configura o repositório
+Tabela **`funcionarios`**:
 
-Prepara o acesso ao banco via JPA.
+| Coluna | Tipo | Restrições |
+|---|---|---|
+| `id` | `BIGINT` | PK, `AUTO_INCREMENT` |
+| `nome` | `VARCHAR(100)` | `NOT NULL` |
+| `sobrenome` | `VARCHAR(100)` | `NOT NULL` |
+| `email` | `VARCHAR(180)` | `NOT NULL`, **UNIQUE** (`uk_funcionarios_email`) |
+| `senha_hash` | `VARCHAR(100)` | `NOT NULL` — hash BCrypt |
+| `data_cadastro` | `DATETIME` | `NOT NULL`, preenchida via `@PrePersist` |
 
-3\. Spring cria o serviço
+---
 
-Injeta repositório e codificador de senhas.
+## 🛡️ Segurança
 
-4\. JavaFX utiliza os controllers
+- **Senhas nunca são salvas em texto puro** — apenas o hash gerado pelo `BCryptPasswordEncoder`.
+- **Normalização de e-mail:** o e-mail é salvo em minúsculas e sem espaços; buscas usam `IgnoreCase`.
+- **Unicidade garantida em duas camadas:** `existsByEmailIgnoreCase` no serviço + *unique constraint* no banco.
+- **Mensagem genérica no login:** o erro "E-mail ou senha incorretos" não revela se o e-mail existe.
+- **Transações:** `@Transactional` no cadastro e `@Transactional(readOnly = true)` na autenticação.
 
-Os controllers podem receber serviços gerenciados pelo Spring por meio do FXMLLoader.
+> ⚠️ **Nunca versione credenciais reais.** Prefira variáveis de ambiente ou um arquivo `application-local.properties` listado no `.gitignore`.
 
-A integração entre JavaFX e Spring é importante: se o `FXMLLoader` criar os controllers diretamente, fora do Spring, eles podem não receber a injeção de dependências. A fábrica de controllers baseada em `contextoSpring::getBean` permite que o Spring os gerencie.
+---
 
-## 8\. Cuidados de segurança
+## 🗺️ Roadmap
 
-O projeto já tem elementos importantes, mas vale distinguir o que está configurado do que precisa ser confirmado.
+- [x] Cadastro de funcionários com validação
+- [x] Login com senha criptografada (BCrypt)
+- [x] Alternância de visibilidade da senha
+- [x] Tela de recuperação de senha (interface)
+- [ ] Envio real de link/código de recuperação por e-mail
+- [ ] Limite de tentativas de login *(já existe o alerta `mensagemDeExcessosDeTentativas`)*
+- [ ] Sessão do usuário logado e tela principal (dashboard)
+- [ ] CRUD completo de funcionários (listar, editar, excluir)
+- [ ] Perfis/permissões (admin, RH, colaborador)
+- [ ] Migrations com Flyway ou Liquibase (substituir `ddl-auto=update`)
+- [ ] Testes unitários e de integração (JUnit 5 + Testcontainers)
+- [ ] Empacotamento nativo com `jpackage` (instalador `.exe` / `.dmg` / `.deb`)
+- [ ] Validação de e-mail e política de senha mais fortes
 
-- Senha: deve ser armazenada usando um algoritmo apropriado para senhas, como BCrypt, e nunca em texto puro. O `PasswordEncoder` deve codificar e verificar as credenciais corretamente.
-- E-mail: deve ter validação de formato e uma política consistente de unicidade.
-- Credenciais do banco: evite manter senhas reais versionadas no Git.
-- Banco de dados: limite as permissões do usuário MySQL às operações necessárias.
-- Mensagens de erro: evite exibir detalhes internos, SQL ou credenciais ao usuário final.
-- Autenticação: a tela de login não substitui o controle de autorização das operações. Se o sistema crescer, será necessário definir quais usuários podem realizar cada ação.
+---
 
-## 9\. Problemas comuns e como diagnosticar
+## 🐞 Problemas conhecidos
 
-| Problema | O que verificar |
-| --- | --- |
-| Falha ao conectar ao MySQL | Serviço ativo, porta `1112`, nome `cadastroteste`, usuário, senha e permissões. |
-| `Could not generate CGLIB subclass` | A opção `--add-opens` e as configurações de módulos Java. |
-| `No qualifying bean` | Se a classe tem a anotação apropriada e está dentro do escopo de descoberta do Spring. |
-| Erro ao carregar FXML | Caminho do arquivo, `fx:controller`, nomes dos campos e métodos do controller. |
-| Cadastro não persiste | Logs do Hibernate, restrições da tabela e exceções do repositório. |
-| E-mail duplicado | Consulta do serviço e restrição de unicidade no MySQL. |
-| Erro de validação da senha | Configuração do `PasswordEncoder` e comparação entre senha informada e hash armazenado. |
+| Item | Detalhe |
+|---|---|
+| Ícone da janela | O caminho `img/Logotipo.png/` em `HelloApplication` termina com `/` e é relativo à classe; por isso o ícone pode não carregar. |
+| Pacote do `EmailValido` | O arquivo está em `service/`, mas declara o pacote `service.funcions_extra`. Funciona na compilação, porém IDEs podem acusar divergência — alinhe pasta e pacote. |
+| Recuperação de senha | Apenas valida o e-mail e exibe um aviso; ainda não envia nada. |
+| Título dos alertas | `TelaDeAviso` usa "Erro de Login" também para avisos de cadastro. |
 
-Quando o erro aparecer, consulte primeiro o primeiro `Caused by` relevante no console. A última exceção costuma indicar a causa técnica mais específica.
+---
 
-## 10\. Resumo: como o sistema se comporta
+## 🤝 Contribuindo
 
-O fluxo completo fica assim:
+Contribuições são bem-vindas!
 
-- Inicialização: JavaFX abre a interface e o Spring prepara os componentes.
-- Cadastro: o controller recebe os campos, o serviço valida as regras e o repositório persiste o funcionário.
-- Persistência: Hibernate transforma as operações JPA em SQL e o MySQL armazena os dados.
-- Login: o serviço localiza o funcionário e verifica a senha codificada.
-- Erros: falhas de validação, conexão ou persistência devem ser tratadas e apresentadas de forma adequada.
-- Encerramento: a aplicação deve fechar o contexto Spring quando a janela principal for encerrada, liberando os recursos gerenciados.
+1. Faça um *fork* do projeto
+2. Crie uma branch: `git checkout -b feature/minha-feature`
+3. Faça o commit: `git commit -m "feat: adiciona minha feature"`
+4. Envie para o seu fork: `git push origin feature/minha-feature`
+5. Abra um **Pull Request**
 
-Essa arquitetura separa interface, regras de negócio e persistência, facilitando a manutenção e a evolução do projeto.
+Sugestão de padrão para commits: [Conventional Commits](https://www.conventionalcommits.org/pt-br/).
 
-Limite desta documentação: ela descreve a arquitetura e as configurações que conhecemos da aplicação. Para documentar cada método real, cada tela e o comportamento exato de todas as exceções, ainda seria necessário revisar a versão atual dos arquivos-fonte.
+---
+
+## 📄 Licença
+
+Distribuído sob a licença **MIT**. Veja o arquivo `LICENSE` para mais informações.
+*(Se ainda não houver um `LICENSE` no repositório, adicione um ou ajuste esta seção.)*
+
+---
+
+<div align="center">
+
+Desenvolvido por **Stilinsky** 💙
+
+</div>
