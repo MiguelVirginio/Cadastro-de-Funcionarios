@@ -3,6 +3,7 @@ package com.stilinsky.cadastro_de_funcionarios;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,6 +11,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import com.stilinsky.cadastro_de_funcionarios.AplicacaoSpring;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class HelloApplication extends Application {
 
@@ -39,6 +41,15 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+
+        // Ícone (se o arquivo não existir, o app abre mesmo assim)
+        URL iconUrl = HelloApplication.class.getResource("img/Logotipo.png/");
+
+        if (iconUrl != null) {
+            stage.getIcons().add(new Image(iconUrl.toExternalForm()));
+        } else {
+            System.err.println("Ícone não encontrado: img/Logotipo.png");
+        }
     }
 
     @Override
